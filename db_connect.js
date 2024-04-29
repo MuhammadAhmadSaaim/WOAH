@@ -2,7 +2,7 @@ const mongoose=require('mongoose');
 const express = require('express')
 const cors = require('cors'); 
 //connection to mongodb
-mongoose.connect("mongodb://localhost:27017/users")
+mongoose.connect("mongodb://localhost:27017/WOAH")
 .then(() => {
     console.log('MongoDB connected successfully');
 })
@@ -14,9 +14,12 @@ mongoose.connect("mongodb://localhost:27017/users")
 const app = express()
 const port = 5000
 app.use(cors());
+app.use(express.json());
 
-app.use(express.json())
+//for login
+app.use('/auth',require('./routes/auth'));
 
+//portNo
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
