@@ -72,7 +72,12 @@ router.post('/login',[
 router.post('/getuser',fetchUser,async(req,res)=>{
     const userid=req.user.id;
     const user=await User.findById(userid).select("-password");
-    res.json(user);
+    if(user==null){
+        res.json("User not found");
+    }
+    else{
+        res.json(user);
+    }
 });
 
 module.exports = router;

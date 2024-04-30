@@ -18,6 +18,9 @@ app.use(express.json());
 
 //for login
 app.use('/auth',require('./routes/auth'));
+//item creation
+
+app.use('/create',require('./routes/store'));
 
 //portNo
 app.listen(port, () => {
