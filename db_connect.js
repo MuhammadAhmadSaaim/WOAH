@@ -19,8 +19,9 @@ app.use(express.json());
 //for login
 app.use('/auth',require('./routes/auth'));
 //item creation
-
 app.use('/create',require('./routes/store'));
+//bidding
+app.use('/bid',require('./routes/auction'));
 
 //portNo
 app.listen(port, () => {

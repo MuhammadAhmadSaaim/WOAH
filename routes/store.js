@@ -34,7 +34,7 @@ router.post("/createitem", fetchUser, async (req, res) => {
       }
   
       const newItem = await Item.create({
-        userId: req.user._id,
+        userId: req.user.id,
         name,
         price,
         description,
