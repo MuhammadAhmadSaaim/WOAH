@@ -46,6 +46,23 @@ router.post("/createitem", fetchUser, async (req, res) => {
       console.error("Error creating item:", err);
       res.status(500).json({ error: "Internal server error." });
     }
-  });
-  
+});
+
+//get all the items in the store
+router.get("/allitems", async (req, res) => {
+  try {
+    const items = await Item.find();
+
+    //when there are no items
+    if (!items || items.length === 0) {
+      return res.status(404).json({ message: "No items found." });
+    }
+
+    res.status(200).json(items);
+  } catch (err) {
+    console.error("Error fetching items:", err);
+    res.status(500).json({ error: "Internal server error." });
+  }
+});
+
 module.exports = router;
