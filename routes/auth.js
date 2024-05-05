@@ -4,7 +4,7 @@ const User = require('../models/user');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const fetchUser=require('../middleware/fetchUser');
+const fetchUser=require('../middleware/fetchuser');
 
 JWT_SECRET='byali';
 

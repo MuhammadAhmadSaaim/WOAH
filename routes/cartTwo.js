@@ -3,7 +3,7 @@ const router = express.Router();
 const Item=require('../models/item');
 const Cart=require('../models/cart');
 const User = require('../models/user');
-const fetchUser = require("../middleware/fetchUser");
+const fetchUser = require("../middleware/fetchuser");
 
 
 //changing bid active to false
