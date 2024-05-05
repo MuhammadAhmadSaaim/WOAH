@@ -10,7 +10,7 @@ const CreateItem = ({ onSubmit }) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     try {
-      const response = await fetch('http://localhost:5000/create/createitem', {
+      const response = await fetch(`${window.location.origin}/create/createitem`, {
         method: 'POST',
         headers: {
           'auth-token': authToken,

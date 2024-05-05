@@ -28,7 +28,7 @@ const Card = ({ name, price, description, image,bidActive }) => {
 
   //placing bid
   const handlebid=async()=>{
-    const response=await fetch('http://localhost:5000/bid/bidding',{
+    const response=await fetch(`${window.location.origin}/bid/bidding`,{
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ const Card = ({ name, price, description, image,bidActive }) => {
   }, []);
 
   const highestBidder=async()=>{
-    const response=await fetch('http://localhost:5000/bid/highestBidder',{
+    const response=await fetch(`${window.location.origin}/bid/highestBidder`,{
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',

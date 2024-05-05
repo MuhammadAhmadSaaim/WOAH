@@ -9,7 +9,7 @@ const CartItem = (props) => {
 
     const stopBidding=async()=>{
       const amount=price;
-      const response = await fetch('http://localhost:5000/carttwo/stopbid', {
+      const response = await fetch(`${window.location.origin}/carttwo/stopbid`, {
         method: 'PATCH', 
         headers: {
           'Content-Type': 'application/json', 

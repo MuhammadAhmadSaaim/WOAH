@@ -26,7 +26,7 @@ const Product = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('http://localhost:5000/create/allitems', {
+      const response = await fetch(`${window.location.origin}/create/allitems`, {
         method: 'GET',
       });
 
@@ -54,7 +54,7 @@ const Product = () => {
         if (search === '') {
             fetchData();
         } else {
-            const response = await fetch(`http://localhost:5000/create/search`, {
+            const response = await fetch(`${window.location.origin}/create/search`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

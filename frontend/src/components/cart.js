@@ -17,7 +17,7 @@ const Cart = () => {
   }, []);
 
   const fetchName=async()=>{
-    const response = await fetch('http://localhost:5000/carttwo/name', {
+    const response = await fetch(`${window.location.origin}/carttwo/name`, {
         method: 'GET',
         headers: {
           'auth-token': authToken,
@@ -28,7 +28,7 @@ const Cart = () => {
   }
   const fetchData = async () => {
     try {
-      const response = await fetch('http://localhost:5000/create/cart', {
+      const response = await fetch(`${window.location.origin}/create/cart`, {
         method: 'GET',
         headers: {
           'auth-token': authToken,
@@ -57,7 +57,7 @@ const Cart = () => {
 
   const fetchAllCart = async () => {
     try {
-      const response = await fetch('http://localhost:5000/carttwo/allcart', {
+      const response = await fetch(`${window.location.origin}/carttwo/allcart`, {
         method: 'GET',
         headers: {
           'auth-token': authToken,
