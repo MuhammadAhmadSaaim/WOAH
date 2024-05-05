@@ -3,30 +3,29 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 
-// Initialize Express
 const app = express();
 const port = 5000;
 
-// Setup middleware before defining routes
+// Setup middleware
 app.use(cors());
 app.use(express.json());
 
-// Connection to MongoDB
-mongoose
-  .connect("mongodb+srv://ali:alinawaz1@cluster0.pc6svvj.mongodb.net/WOAH?retryWrites=true&w=majority&appName=Cluster0")
+// MongoDB Connection
+const mongoUri = process.env.MONGO_URI; // Use environment variables
+mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('MongoDB connected successfully');
-
-    // Define routes only after successful database connection
+    
+    // Define routes
     app.use('/auth', require('./routes/auth'));
     app.use('/create', require('./routes/store'));
     app.use('/bid', require('./routes/auction'));
     app.use('/carttwo', require('./routes/cartTwo'));
 
-    // Serve static files from the "frontend" build folder
+    // Serve static files
     app.use(express.static(path.resolve(__dirname, "frontend", "build")));
 
-    // Default route to serve the frontend
+    // Default route for serving frontend
     app.get("/", (req, res) => {
       res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
     });
@@ -38,5 +37,5 @@ mongoose
   })
   .catch((error) => {
     console.error('Error connecting to MongoDB:', error);
-    process.exit(1); // Exit the process to prevent undefined behavior
+    process.exit(1); // Exit if connection fails
   });
