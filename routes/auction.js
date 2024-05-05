@@ -68,7 +68,7 @@ router.post("/highestBidder", async (req, res) => {
       return res.status(404).json({ error: "User not found." });
     }
 
-    res.json({ highestBidder: highestBidder.name });
+    res.json({ highestBidderId:highestBid.userId,highestBidder: highestBidder.name,amount:highestBid.amount });
   } catch (err) {
     console.error("Error fetching highest bidder:", err); // Log the error
     res.status(500).json({ error: "Internal server error." }); // Return 500 for unexpected errors

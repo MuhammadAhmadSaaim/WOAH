@@ -2,7 +2,7 @@ const mongoose=require('mongoose');
 const express = require('express')
 const cors = require('cors'); 
 //connection to mongodb
-mongoose.connect("mongodb://localhost:27017/WOAH")
+mongoose.connect("mongodb+srv://ali:alinawaz1@cluster0.pc6svvj.mongodb.net/WOAH?retryWrites=true&w=majority&appName=Cluster0")
 .then(() => {
     console.log('MongoDB connected successfully');
 })
@@ -22,6 +22,8 @@ app.use('/auth',require('./routes/auth'));
 app.use('/create',require('./routes/store'));
 //bidding
 app.use('/bid',require('./routes/auction'));
+//newcart
+app.use('/carttwo',require('./routes/cartTwo'));
 
 //portNo
 app.listen(port, () => {

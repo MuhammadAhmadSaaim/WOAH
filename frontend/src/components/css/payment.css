@@ -1,0 +1,68 @@
+.payment-container {
+    max-width: 400px;
+    padding: 20px;
+    margin: 0 auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #f9f9f9;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .payment-title {
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .payment-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .input-group {
+    margin-bottom: 15px;
+  }
+  
+  .input-label {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+  }
+  
+  .input-field {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: white;
+  }
+  
+  .split {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .split > input {
+    width: 48%;
+  }
+  
+  .checkout-button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    color: black;
+    background: white;
+    border: 2px solid black;
+    text-transform: uppercase;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .checkout-button:hover {
+    color: white;
+    background: #031648;
+    border: none;
+  }
+  
