@@ -11,6 +11,11 @@ mongoose.connect("mongodb+srv://ali:alinawaz1@cluster0.pc6svvj.mongodb.net/WOAH?
     console.error('Error connecting to MongoDB:', error);
 });
 
+//for vercel
+app.get("/", (req, res) => {
+  app.use(express.static(path.resolve(__dirname, "frontend", "build")));
+  res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
+});  
 //adding express js
 const app = express()
 const port = 5000
@@ -25,12 +30,6 @@ app.use('/create',require('./routes/store'));
 app.use('/bid',require('./routes/auction'));
 //newcart
 app.use('/carttwo',require('./routes/cartTwo'));
-
-//for vercel
-app.get("/", (req, res) => {
-  app.use(express.static(path.resolve(__dirname, "frontend", "build")));
-  res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
-});  
 
 //portNo
 app.listen(port, () => {
