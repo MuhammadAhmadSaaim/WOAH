@@ -4,10 +4,7 @@ const cors = require('cors');
 const path = require('path');
 
 // Connect to MongoDB
-mongoose.connect('mongodb+srv://ali:alinawaz1@cluster0.pc6svvj.mongodb.net/WOAH?retryWrites=true&w=majority&appName=Cluster0', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect('mongodb+srv://ali:alinawaz1@cluster0.pc6svvj.mongodb.net/WOAH?retryWrites=true&w=majority&appName=Cluster0')
   .then(() => {
     console.log('MongoDB connected successfully');
   })

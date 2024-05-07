@@ -5,28 +5,38 @@ import CartItem from './cartItem';
 const Cart = () => {
   const authToken = localStorage.getItem('authToken');
   const [cart, setCart] = useState([]);
-  const [error, setError] = useState('');
-  const [carttwo, setCarttwo] = useState([]);
-  const [errortwo, setErrortwo] = useState('');
-  const [name, setName] = useState('User');
+  const [cartError, setCartError] = useState('');
+  const [cartTwo, setCartTwo] = useState([]);
+  const [cartTwoError, setCartTwoError] = useState('');
+  const [userName, setUserName] = useState('User');
 
   useEffect(() => {
-    fetchData();
+    fetchCart();
     fetchAllCart();
-    fetchName();
+    fetchUserName();
   }, []);
 
-  const fetchName=async()=>{
-    const response = await fetch(`${window.location.origin}/carttwo/name`, {
+  const fetchUserName = async () => {
+    try {
+      const response = await fetch(`${window.location.origin}/carttwo/name`, {
         method: 'GET',
         headers: {
           'auth-token': authToken,
         },
       });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch user name.');
+      }
+
       const data = await response.json();
-      setName(data.name);
-  }
-  const fetchData = async () => {
+      setUserName(data.name || 'User');
+    } catch (error) {
+      console.error('Error fetching user name:', error);
+    }
+  };
+
+  const fetchCart = async () => {
     try {
       const response = await fetch(`${window.location.origin}/create/cart`, {
         method: 'GET',
@@ -35,23 +45,21 @@ const Cart = () => {
         },
       });
 
-      if (response.status === 404) {
-        setError('No items found in the cart.');
-        setCart([]);
-        return;
-      }
-
-      const data = await response.json();
-      console.log(data);
-      if (Array.isArray(data) && data.length === 0) {
-        setError('Your cart is empty.');
+      if (response.status === 404 || response.status === 204) {
+        setCartError('No items found in the cart.');
         setCart([]);
       } else {
-        setCart(data);
+        const data = await response.json();
+        if (data.length === 0) {
+          setCartError('No items found in the cart.');
+          setCart([]);
+        } else {
+          setCart(data);
+        }
       }
     } catch (error) {
       console.error('Error fetching cart:', error);
-      setError('An error occurred while fetching the cart. Please try again later.');
+      setCartError('An error occurred while fetching the cart. Please try again later.');
     }
   };
 
@@ -64,23 +72,21 @@ const Cart = () => {
         },
       });
 
-      if (response.status === 404) {
-        setErrortwo('No items found in the cart.');
-        setCarttwo([]);
-        return;
-      }
-
-      const data = await response.json();
-      console.log(data);
-      if (Array.isArray(data) && data.length === 0) {
-        setErrortwo('Your cart is empty.');
-        setCarttwo([]);
+      if (response.status === 404 || response.status === 204) {
+        setCartTwoError('No items found in the cart.');
+        setCartTwo([]);
       } else {
-        setCarttwo(data);
+        const data = await response.json();
+        if (data.length === 0) {
+          setCartTwoError('No items found in the cart.');
+          setCartTwo([]);
+        } else {
+          setCartTwo(data);
+        }
       }
     } catch (error) {
-      console.error('Error fetching cart:', error);
-      setErrortwo('An error occurred while fetching the cart. Please try again later.');
+      console.error('Error fetching all carts:', error);
+      setCartTwoError('An error occurred while fetching all carts. Please try again later.');
     }
   };
 
@@ -88,37 +94,53 @@ const Cart = () => {
     <>
       <div className="cart_main">
         <div className="text" style={{ color: '#002142' }}>
-          Hello {name}
+          Hello {userName}
         </div>
       </div>
       <div className="container">
         <hr />
       </div>
-      {error ? (
+      {cartError ? (
         <div className="text-center mt-4">
-          <h3>{error}</h3> {/* Display the error message */}
+          <h3>{cartError}</h3> {/* Display the error message */}
+        </div>
+      ) : cart.length === 0 ? (
+        <div className="text-center mt-4">
+          <h3>No items found in the cart.</h3> {/* Display when no items */}
         </div>
       ) : (
-        cart.map((element, index) => (
+        cart.map((item, index) => (
           <div key={index} className="container d-flex flex-column justify-content-center align-items-center">
-            <CartItem pay={true} userId={element.userId} itemId={element.itemId} name={element.itemName} bidder={element.highestBidder} price={element.highestBid} bidActive={element.bidActive} />
+            <CartItem
+              pay={true}
+              userId={item.userId}
+              itemId={item.itemId}
+              name={item.itemName}
+              bidder={item.highestBidder}
+              price={item.highestBid}
+              bidActive={item.bidActive}
+            />
           </div>
         ))
       )}
       <div className="container">
         <hr />
       </div>
-      {errortwo?(
+      {cartTwoError ? (
         <div className="text-center mt-4">
-        <h3>{error}</h3> {/* Display the error message */}
-      </div>
-      ):
-      (carttwo.map((element,index)=>(
-        <div key={index} className="container d-flex flex-column justify-content-center align-items-center">
-        <CartItem pay={false} name={element.name} price={element.amount} />
-      </div>
-      ))
-    )}
+          <h3>{cartTwoError}</h3> {/* Display the error message */}
+        </div>
+      ) : cartTwo.length === 0 ? (
+        <div className="text-center mt-4">
+          <h3>No items found in the second cart.</h3> {/* Display when no items */}
+        </div>
+      ) : (
+        cartTwo.map((item, index) => (
+          <div key={index} className="container d-flex flex-column justify-content-center align-items-center">
+            <CartItem pay={false} name={item.name} price={item.amount} />
+          </div>
+        ))
+      )}
     </>
   );
 };
