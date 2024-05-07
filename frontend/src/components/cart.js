@@ -4,9 +4,9 @@ import CartItem from './cartItem';
 
 const Cart = () => {
   const authToken = localStorage.getItem('authToken');
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState([]); // Ensures it's always initialized as an array
   const [cartError, setCartError] = useState('');
-  const [cartTwo, setCartTwo] = useState([]);
+  const [cartTwo, setCartTwo] = useState([]); // Ensures it's always initialized as an array
   const [cartTwoError, setCartTwoError] = useState('');
   const [userName, setUserName] = useState('User');
 
@@ -45,21 +45,22 @@ const Cart = () => {
         },
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch cart data.');
+      if (!response.ok) { // Handle other non-200 statuses
+        setCartError('No item Found');
+        setCart([]); // Ensure it's an empty array
+      } else {
+        const data = await response.json();
+        if (Array.isArray(data)) {
+          setCart(data);
+        } else {
+          setCartError('Invalid cart data.');
+          setCart([]); // Ensure it's an empty array
+        }
       }
-
-      const data = await response.json();
-
-      if (!Array.isArray(data)) {
-        throw new Error('Invalid cart data format.');
-      }
-
-      setCart(data.length ? data : []);
-      setCartError(data.length ? '' : 'No items found in the cart.');
     } catch (error) {
       console.error('Error fetching cart:', error);
       setCartError('An error occurred while fetching the cart. Please try again later.');
+      setCart([]); // Ensure it's an empty array
     }
   };
 
@@ -73,20 +74,21 @@ const Cart = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch all carts.');
+        setCartTwoError('No Item Found');
+        setCartTwo([]); // Ensure it's an empty array
+      } else {
+        const data = await response.json();
+        if (Array.isArray(data)) {
+          setCartTwo(data);
+        } else {
+          setCartTwoError('Invalid data for all carts.');
+          setCartTwo([]); // Ensure it's an empty array
+        }
       }
-
-      const data = await response.json();
-
-      if (!Array.isArray(data)) {
-        throw new Error('Invalid data format for cartTwo.');
-      }
-
-      setCartTwo(data.length ? data : []);
-      setCartTwoError(data.length ? '' : 'No items found in the second cart.');
     } catch (error) {
       console.error('Error fetching all carts:', error);
       setCartTwoError('An error occurred while fetching all carts. Please try again later.');
+      setCartTwo([]); // Ensure it's an empty array
     }
   };
 
@@ -104,10 +106,6 @@ const Cart = () => {
         <div className="text-center mt-4">
           <h3>{cartError}</h3> {/* Display the error message */}
         </div>
-      ) : cart.length === 0 ? (
-        <div className="text-center mt-4">
-          <h3>No items found in the cart.</h3> {/* Display when no items */}
-        </div>
       ) : (
         cart.map((item, index) => (
           <div key={index} className="container d-flex flex-column justify-content-center align-items-center">
@@ -123,6 +121,7 @@ const Cart = () => {
           </div>
         ))
       )}
+
       <div className="container">
         <hr />
       </div>
@@ -130,14 +129,14 @@ const Cart = () => {
         <div className="text-center mt-4">
           <h3>{cartTwoError}</h3> {/* Display the error message */}
         </div>
-      ) : cartTwo.length === 0 ? (
-        <div className="text-center mt-4">
-          <h3>No items found in the second cart.</h3> {/* Display when no items */}
-        </div>
       ) : (
         cartTwo.map((item, index) => (
           <div key={index} className="container d-flex flex-column justify-content-center align-items-center">
-            <CartItem pay={false} name={item.name} price={item.amount} />
+            <CartItem
+              pay={false}
+              name={item.name}
+              price={item.amount}
+            />
           </div>
         ))
       )}
