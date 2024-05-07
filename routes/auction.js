@@ -43,38 +43,60 @@ router.post("/bidding", fetchUser, async (req, res) => {
 //find highest bid
 
 router.post("/highestBidder", async (req, res) => {
-  const { name,price,description } = req.body;
-  //finding the item yo
-  const item = await Item.findOne({
-    name: name,
-    price: price,
-    description: description,
-  });
-  
-  if(!item){
-    res.status(404).json("Bidder not found");
-  }
-  const itemId=item.id;
+  const { name, price, description } = req.body;
 
   try {
-    
+    // Find the item based on the provided details
+    const item = await Item.findOne({
+      name: name,
+      price: price,
+      description: description,
+    });
+
+    if (!item) {
+      return res.status(404).json({ error: "Item not found" });
+    }
+
+    const itemId = item._id;
+
+    // Find the highest bid for this item
     const highestBid = await Bid.findOne({ itemId }).sort({ amount: -1 });
 
     if (!highestBid) {
-      return res.status(404).json({ error: "No bids found for this item." });
+      // Return default values when there's no bid
+      return res.json({
+        highestBidderId: "NaN",
+        highestBidder: "NaN",
+        amount: 0,
+      });
     }
 
     // Find the user who placed the highest bid
     const highestBidder = await User.findById(highestBid.userId);
 
     if (!highestBidder) {
-      return res.status(404).json({ error: "User not found." });
+      // If the user is not found, return default values
+      return res.json({
+        highestBidderId: "NaN",
+        highestBidder: "NaN",
+        amount: 0,
+      });
     }
 
-    res.json({ highestBidderId:highestBid.userId,highestBidder: highestBidder.name,amount:highestBid.amount });
+    // Return the highest bidder information
+    res.json({
+      highestBidderId: highestBid.userId,
+      highestBidder: highestBidder.name,
+      amount: highestBid.amount,
+    });
+
   } catch (err) {
-    console.error("Error fetching highest bidder:", err); // Log the error
-    res.status(500).json({ error: "Internal server error." }); // Return 500 for unexpected errors
+    console.error("Error fetching highest bidder:", err);
+
+    // Return a generic error response with a helpful message
+    res.status(500).json({
+      error: "An internal error occurred while fetching the highest bidder. Please try again later.",
+    });
   }
 });
   
