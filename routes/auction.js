@@ -51,6 +51,9 @@ router.post("/highestBidder", async (req, res) => {
     description: description,
   });
   
+  if(!item){
+    res.status(404).json("Bidder not found");
+  }
   const itemId=item.id;
 
   try {

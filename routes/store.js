@@ -3,59 +3,72 @@ const router = express.Router();
 const { body, validationResult } = require("express-validator");
 const fetchUser = require("../middleware/fetchuser");
 const Item=require('../models/item');
-
-//for multer
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
+const cloudinary = require('cloudinary').v2;
 
-const uploadDirectory = path.resolve(__dirname, '../frontend/public/images');
-if (!fs.existsSync(uploadDirectory)) {
-  fs.mkdirSync(uploadDirectory, { recursive: true }); 
-}
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadDirectory);
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now();
-    cb(null, `${uniqueSuffix}-${file.originalname}`);
-  },
+
+//cloudinary          
+cloudinary.config({
+  cloud_name: 'dabc0kgo5',
+  api_key: '715824876325468',
+  api_secret: 'pEPHhCFOom_Yox1F5IOIRd7lK0Q',
 });
 
-const upload = multer({ storage });
-//create a item to sell
-router.post("/createitem", fetchUser,upload.single('image'), async (req, res) => {
-  const imageName = req.file.filename;
+// Set up Multer for in-memory storage
+const storage = multer.memoryStorage();
+const upload = multer({ storage }); 
 
-    const { name, price, description } = req.body;
-  
-    try {
-      const existingItem = await Item.findOne({
-        name: name,
-        price: price,
-        description: description,
-      });
-  
-      if (existingItem) {
-        return res
-          .status(409)
-          .json({ error: "Item already exists." });
+// Function to upload image to Cloudinary and return the URL
+function uploadImageToCloudinary(buffer) {
+  return new Promise((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream((error, result) => {
+      if (error) {
+        reject(error); // Reject if there's an error
+      } else {
+        resolve(result.url); // Resolve with the Cloudinary URL
       }
-  
-      const newItem = await Item.create({
-        userId: req.user.id,
-        name,
-        price,
-        description,
-        image:imageName,
-      }); 
-  
-      res.status(201).json(newItem);
-    } catch (err) {
-      console.error("Error creating item:", err);
-      res.status(500).json({ error: "Internal server error." });
+    });
+
+    uploadStream.end(buffer); // End the stream with the buffer
+  });
+}
+
+// Route handler for creating an item
+router.post('/createitem', fetchUser, upload.single('image'), async (req, res) => {
+  try {
+    const { name, price, description } = req.body;
+
+    let imageUrl = null;
+    if (req.file) {
+      const imageBuffer = req.file.buffer; // Get the image buffer from Multer
+      imageUrl = await uploadImageToCloudinary(imageBuffer); // Upload to Cloudinary and get the URL
     }
+
+    const existingItem = await Item.findOne({
+      name,
+      price,
+      description,
+    });
+
+    if (existingItem) {
+      return res.status(409).json({ error: 'Item already exists.' });
+    }
+
+    const newItem = await Item.create({
+      userId: req.user.id,
+      name,
+      price,
+      description,
+      image: imageUrl, // Store the Cloudinary image URL
+    });
+
+    res.status(201).json(newItem);
+  } catch (err) {
+    console.error('Error creating item:', err);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
 });
 
 //get all the items in the store

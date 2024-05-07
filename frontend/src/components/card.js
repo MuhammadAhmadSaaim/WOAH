@@ -62,7 +62,7 @@ const Card = ({ name, price, description, image,bidActive }) => {
   return (
     <>
       <div className="cardproduct my-3">
-          <img className="card-img" src={`/images/${image}`} alt="Card Image" />
+          <img className="card-img" src={image} alt="Card Image" />
         <div className="card-info">
           <p className="text-title">{name.length > 15 ? name.substring(0, 12) : name}</p>
           <p className="text-body">{description.length > 20 ? description.substring(0, 20) : description}</p>
