@@ -57,7 +57,7 @@ router.post("/highestBidder", async (req, res) => {
       return res.status(404).json({ error: "Item not found" });
     }
 
-    const itemId = item._id;
+    const itemId = item.id;
 
     // Find the highest bid for this item
     const highestBid = await Bid.findOne({ itemId }).sort({ amount: -1 });

@@ -45,7 +45,7 @@ const Cart = () => {
         },
       });
 
-      if (response.status === 404 || response.status === 204) {
+      if (response.status === 404) {
         setCartError('No items found in the cart.');
         setCart([]);
       } else {
@@ -72,7 +72,7 @@ const Cart = () => {
         },
       });
 
-      if (response.status === 404 || response.status === 204) {
+      if (response.status === 404) {
         setCartTwoError('No items found in the cart.');
         setCartTwo([]);
       } else {

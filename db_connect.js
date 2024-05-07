@@ -30,7 +30,7 @@ app.use('/carttwo', require('./routes/cartTwo')); // Route for managing cart
 
 // Catch-all route to serve the React app
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html')); // Serve the React app's entry point for all unknown routes
+  res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
 });
 
 // Start the Express server

@@ -136,18 +136,16 @@ router.get('/cart', fetchUser, async (req, res) => {
         body: JSON.stringify({ name, price, description }),
       });
 
-      if (!response.ok) {
-        console.warn(`Failed to fetch highest bidder for ${name}: ${response.statusText}`);
+      const highestBidderData = await response.json();
+
+      if (highestBidderData.error) {
         return {
           ...defaultValues,
           bidActive:bidActive,
-          itemId: id, // At least set the itemId
+          itemId: id,
           itemName: name,
-        }; // Return default values with the given itemName
+        };
       }
-
-      const highestBidderData = await response.json();
-
       return {
         bidActive:bidActive,
         itemId: id,
