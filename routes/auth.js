@@ -23,7 +23,7 @@ router.post('/signup',[
     let user = await User.findOne({ email: req.body.email });
 
     if (user) {
-        return res.status(400).json({ error: 'Enter a different Email Address' });
+        return res.status(400).json({ error: 'User already Exist' });
     } else {
         //making salt and genrating hash
         const salt=await bcrypt.genSalt(10);

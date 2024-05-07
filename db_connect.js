@@ -1,39 +1,42 @@
-const mongoose=require('mongoose');
-const express = require('express')
-const cors = require('cors'); 
-const path = require("path");
-//connection to mongodb
-mongoose.connect("mongodb+srv://ali:alinawaz1@cluster0.pc6svvj.mongodb.net/WOAH?retryWrites=true&w=majority&appName=Cluster0")
-.then(() => {
-    console.log('MongoDB connected successfully');
+const mongoose = require('mongoose');
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
+
+// Connect to MongoDB
+mongoose.connect('mongodb+srv://ali:alinawaz1@cluster0.pc6svvj.mongodb.net/WOAH?retryWrites=true&w=majority&appName=Cluster0', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 })
-.catch((error) => {
+  .then(() => {
+    console.log('MongoDB connected successfully');
+  })
+  .catch((error) => {
     console.error('Error connecting to MongoDB:', error);
+  });
+
+// Create an Express app
+const app = express();
+const port = process.env.PORT || 5000; // Use a default or environment-specific port
+
+app.use(cors()); // Enable Cross-Origin Resource Sharing
+app.use(express.json()); // Middleware to parse JSON request bodies
+
+// Serve static files from the React build
+app.use(express.static(path.resolve(__dirname, 'frontend', 'build')));
+
+// API routes
+app.use('/auth', require('./routes/auth')); // Route for authentication
+app.use('/create', require('./routes/store')); // Route for creating items
+app.use('/bid', require('./routes/auction')); // Route for bidding
+app.use('/carttwo', require('./routes/cartTwo')); // Route for managing cart
+
+// Catch-all route to serve the React app
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html')); // Serve the React app's entry point for all unknown routes
 });
 
-//adding express js
-const app = express()
-const port = 5000
-app.use(cors());
-app.use(express.json());
-
-//for vercel
-app.get("/", (req, res) => {
-  app.use(express.static(path.resolve(__dirname, "frontend", "build")));
-  res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
-});  
-
-//for login
-app.use('/auth',require('./routes/auth'));
-//item creation
-app.use('/create',require('./routes/store'));
-//bidding
-app.use('/bid',require('./routes/auction'));
-//newcart
-app.use('/carttwo',require('./routes/cartTwo'));
-
-
-//portNo
+// Start the Express server
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+  console.log(`Server is running on port ${port}`);
+});

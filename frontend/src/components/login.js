@@ -8,6 +8,8 @@ function Login() {
     const [Sname, setSname] = useState("");
     const [Semail, setSemail]= useState("");
     const [Spass, setSpass]= useState("");
+    const [error,setError]=useState("Forgot your password?");
+    const [serror,setSerror]=useState("Login if you already have an account");
 
     const handle_sign_up=async(e)=>{
         e.preventDefault();
@@ -19,6 +21,9 @@ function Login() {
         body: JSON.stringify({ name:Sname,email:Semail, password:Spass }),
         });
         const data=await response.json();
+        if (data.error) {
+            setSerror(data.error); // This should set the error state
+          }
         if(data.ok){
             console.log(data.token);
             localStorage.setItem('authToken', data.token);
@@ -30,23 +35,28 @@ function Login() {
     const [lEmail, setLemail]= useState("");
     const [lPass, setLpass]= useState("");
 
-    const handle_login=async(e)=>{
+    const handle_login = async (e) => {
         e.preventDefault();
-        const response=await fetch(`${window.location.origin}/auth/login`,{
-        method: 'POST',
-        headers: {
+        const response = await fetch(`${window.location.origin}/auth/login`, {
+          method: 'POST',
+          headers: {
             'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({email:lEmail, password:lPass }),
+          },
+          body: JSON.stringify({ email: lEmail, password: lPass }),
         });
-        const data=await response.json();
-        if(data.ok){
-            console.log(data.token);
-            localStorage.setItem('authToken', data.token);
-            navigate('/');
-            window.location.reload();
+        const data = await response.json();
+        console.log(data);
+        if (data.error) {
+          setError(data.error); // This should set the error state
         }
-    }
+      
+        if (data.ok) {
+          localStorage.setItem('authToken', data.token);
+          navigate('/');
+          window.location.reload();
+        }
+      };
+      
 
 
     const [signIn, toggle] = React.useState(true);
@@ -59,19 +69,20 @@ function Login() {
                      <Components.Input type='text' placeholder='Name' required onChange={(e)=>{setSname(e.target.value)}}/>
                      <Components.Input type='email' placeholder='Email' required onChange={(e)=>{setSemail(e.target.value)}}/>
                      <Components.Input type='password' placeholder='Password' required onChange={(e)=>{setSpass(e.target.value)}}/>
-                      <Components.Button onClick={handle_sign_up}>Sign Up</Components.Button>
+                     <Components.Anchor href='#'>{serror}</Components.Anchor>
+                     <Components.Button onClick={handle_sign_up}>Sign Up</Components.Button>
                  </Components.Form>
              </Components.SignUpContainer>
 
              <Components.SignInContainer signinIn={signIn}>
-                  <Components.Form>
-                      <Components.Title>Login</Components.Title>
-                      <Components.Input type='email' placeholder='Email' required onChange={(e)=>{setLemail(e.target.value)}}/>
-                      <Components.Input type='password' placeholder='Password' required onChange={(e)=>{setLpass(e.target.value)}}/>
-                      <Components.Anchor href='#'>Forgot your password?</Components.Anchor>
-                      <Components.Button onClick={handle_login}>Login</Components.Button>
-                  </Components.Form>
-             </Components.SignInContainer>
+            <Components.Form>
+                <Components.Title>Login</Components.Title>
+                <Components.Input type='email' placeholder='Email' required onChange={(e) => setLemail(e.target.value)} />
+                <Components.Input type='password' placeholder='Password' required onChange={(e) => setLpass(e.target.value)} />
+                <Components.Anchor href='#'>{error}</Components.Anchor> {/* This should display the error message */}
+                <Components.Button onClick={handle_login}>Login</Components.Button>
+            </Components.Form>
+            </Components.SignInContainer>
 
              <Components.OverlayContainer signinIn={signIn}>
                  <Components.Overlay signinIn={signIn}>

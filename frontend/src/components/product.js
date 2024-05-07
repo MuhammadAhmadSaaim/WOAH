@@ -105,6 +105,7 @@ const Product = () => {
                       price={element.price}
                       description={element.description}
                       image={element.image}
+                      userid={element.userId}
                       bidActive={element.bidActive}
                     />
                   </div>

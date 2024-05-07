@@ -65,7 +65,7 @@ router.patch('/stopbid', async (req, res) => {
     try {
       const user = await User.findById(req.user.id);
   
-      res.status(200).json(user.name);
+      res.status(200).json({name:user.name,id:user.id});
     } catch (err) {
       console.error("Error fetching items:", err);
       res.status(500).json({ error: "Internal server error." });

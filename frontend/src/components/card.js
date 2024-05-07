@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react';
 import './css/card.css';
 import { redirect, useNavigate } from "react-router-dom";
 
-const Card = ({ name, price, description, image,bidActive }) => {
+const Card = ({ name, price, description, image,userid,bidActive }) => {
   const [amount,setAmount]=useState();
   const [bidder,setBidder]=useState("");
   const [bid,setBid]=useState();
@@ -11,13 +11,14 @@ const Card = ({ name, price, description, image,bidActive }) => {
 
   // State to manage modal visibility
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [user,setUser]=useState('');
 
   // Function to open and close the modal
   const openModal = () => {
     if (authToken == null) {
       navigate('/login');
     } else {
-      if(bidActive){
+      if(bidActive && user!=userid){
         setIsModalOpen(true);
       }
     }
@@ -44,6 +45,7 @@ const Card = ({ name, price, description, image,bidActive }) => {
   //getting highest bidder
   useEffect(() => {
     highestBidder(); 
+    fetchName();
   }, []);
 
   const highestBidder=async()=>{
@@ -59,6 +61,17 @@ const Card = ({ name, price, description, image,bidActive }) => {
     setBid(data.amount);
   }
 
+  //name
+  const fetchName=async()=>{
+    const response = await fetch(`${window.location.origin}/carttwo/name`, {
+        method: 'GET',
+        headers: {
+          'auth-token': authToken,
+        },
+      });
+      const data = await response.json();
+      setUser(data.id);
+  }
   return (
     <>
       <div className="cardproduct my-3">

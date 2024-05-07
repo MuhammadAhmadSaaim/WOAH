@@ -24,7 +24,7 @@ const Cart = () => {
         },
       });
       const data = await response.json();
-      setName(data);
+      setName(data.name);
   }
   const fetchData = async () => {
     try {
