@@ -45,18 +45,18 @@ const Cart = () => {
         },
       });
 
-      if (response.status === 404) {
-        setCartError('No items found in the cart.');
-        setCart([]);
-      } else {
-        const data = await response.json();
-        if (data.length === 0) {
-          setCartError('No items found in the cart.');
-          setCart([]);
-        } else {
-          setCart(data);
-        }
+      if (!response.ok) {
+        throw new Error('Failed to fetch cart data.');
       }
+
+      const data = await response.json();
+
+      if (!Array.isArray(data)) {
+        throw new Error('Invalid cart data format.');
+      }
+
+      setCart(data.length ? data : []);
+      setCartError(data.length ? '' : 'No items found in the cart.');
     } catch (error) {
       console.error('Error fetching cart:', error);
       setCartError('An error occurred while fetching the cart. Please try again later.');
@@ -72,18 +72,18 @@ const Cart = () => {
         },
       });
 
-      if (response.status === 404) {
-        setCartTwoError('No items found in the cart.');
-        setCartTwo([]);
-      } else {
-        const data = await response.json();
-        if (data.length === 0) {
-          setCartTwoError('No items found in the cart.');
-          setCartTwo([]);
-        } else {
-          setCartTwo(data);
-        }
+      if (!response.ok) {
+        throw new Error('Failed to fetch all carts.');
       }
+
+      const data = await response.json();
+
+      if (!Array.isArray(data)) {
+        throw new Error('Invalid data format for cartTwo.');
+      }
+
+      setCartTwo(data.length ? data : []);
+      setCartTwoError(data.length ? '' : 'No items found in the second cart.');
     } catch (error) {
       console.error('Error fetching all carts:', error);
       setCartTwoError('An error occurred while fetching all carts. Please try again later.');
