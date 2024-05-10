@@ -48,25 +48,25 @@ router.post("/highestBidder", async (req, res) => {
   try {
     // Find the item based on the provided details
     const item = await Item.findOne({
-      name: name,
-      price: price,
-      description: description,
+      name,
+      price,
+      description,
     });
 
     if (!item) {
       return res.status(404).json({ error: "Item not found" });
     }
 
-    const itemId = item.id;
+    const itemId = item._id;
 
     // Find the highest bid for this item
     const highestBid = await Bid.findOne({ itemId }).sort({ amount: -1 });
 
     if (!highestBid) {
       // Return default values when there's no bid
-      return res.json({
+      return res.status(200).json({
         highestBidderId: "NaN",
-        highestBidder: "NaN",
+        highestBidder: "None",
         amount: 0,
       });
     }
@@ -75,16 +75,15 @@ router.post("/highestBidder", async (req, res) => {
     const highestBidder = await User.findById(highestBid.userId);
 
     if (!highestBidder) {
-      // If the user is not found, return default values
-      return res.json({
+      return res.status(200).json({
         highestBidderId: "NaN",
-        highestBidder: "NaN",
+        highestBidder: "Unknown",
         amount: 0,
       });
     }
 
     // Return the highest bidder information
-    res.json({
+    res.status(200).json({
       highestBidderId: highestBid.userId,
       highestBidder: highestBidder.name,
       amount: highestBid.amount,
@@ -92,10 +91,8 @@ router.post("/highestBidder", async (req, res) => {
 
   } catch (err) {
     console.error("Error fetching highest bidder:", err);
-
-    // Return a generic error response with a helpful message
     res.status(500).json({
-      error: "An internal error occurred while fetching the highest bidder. Please try again later.",
+      error: "An internal error occurred. Please try again later.",
     });
   }
 });

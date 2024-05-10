@@ -44,13 +44,11 @@ const Cart = () => {
           'auth-token': authToken,
         },
       });
-      console.log(response)
       if (!response.ok) { // Handle other non-200 statuses
         setCartError('No item Found');
         setCart([]); // Ensure it's an empty array
       } else {
         const data = await response.json();
-        console.log(data);
         if (Array.isArray(data)) {
           setCart(data);
         } else {
