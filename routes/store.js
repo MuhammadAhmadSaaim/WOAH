@@ -126,34 +126,45 @@ router.get('/cart', fetchUser, async (req, res) => {
     };
 
     // Fetch the highest bidder data for each item
+    const baseUrl = req.protocol + '://' + req.get('host'); // Correctly get the server base URL
     const highestBidderPromises = items.map(async (item) => {
-      const { id, name, price, description,bidActive } = item;
-      const response = await fetch('http://localhost:5000/bid/highestBidder', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, price, description }),
-      });
+      const { id, name, price, description, bidActive } = item;
+      try {
+        const response = await fetch(`${baseUrl}/bid/highestBidder`, {
+          method: 'POST', // Keep the correct method based on previous explanations
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name, price, description }),
+        });
 
-      const highestBidderData = await response.json();
+        const highestBidderData = await response.json();
 
-      if (highestBidderData.error) {
+        if (highestBidderData.error) {
+          return {
+            ...defaultValues,
+            bidActive: bidActive,
+            itemId: id,
+            itemName: name,
+          };
+        }
+        return {
+          bidActive: bidActive,
+          itemId: id,
+          userId: highestBidderData.highestBidderId || defaultValues.userId,
+          itemName: name,
+          highestBidder: highestBidderData.highestBidder || defaultValues.highestBidder,
+          highestBid: highestBidderData.amount || defaultValues.highestBid,
+        };
+      } catch (error) {
+        console.error('Error fetching highest bidder data:', error);
         return {
           ...defaultValues,
-          bidActive:bidActive,
+          bidActive: bidActive,
           itemId: id,
           itemName: name,
         };
       }
-      return {
-        bidActive:bidActive,
-        itemId: id,
-        userId: highestBidderData.highestBidderId || defaultValues.userId,
-        itemName: name,
-        highestBidder: highestBidderData.highestBidder || defaultValues.highestBidder,
-        highestBid: highestBidderData.amount || defaultValues.highestBid,
-      };
     });
 
     // Wait for all fetch operations to complete
