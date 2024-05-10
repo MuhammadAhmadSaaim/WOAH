@@ -1,0 +1,53 @@
+.pmain{
+    text-align: center;
+    color: black;
+}
+.text{
+    font-size: 100px;
+    font-weight: bold;
+    color: #002142;
+    transition: letter-spacing 0.8s ease-in-out;
+}
+.text:hover {
+    letter-spacing: 3px;
+}
+.searchbar{
+    width: 30%;
+    height: 40px;
+    text-align: center;
+    border-radius: 5px;
+}
+.btn_pro{
+    border: 2px solid black;
+    background-color: #002142;
+    font-weight: bold;
+    color: white;
+    padding: 7px 8px;
+    border-radius: 10px;
+    transition: ease-out 0.5s;
+}
+.btn_pro:active {
+    transform: scale(0.9);
+}
+.custom_container{
+    --bs-gutter-x: 1.5rem;
+}
+
+@media (max-width:400px){
+    .text{
+        font-size: 60px;
+    }
+    .btn_pro{
+        border: 1px solid black;
+        padding: 3px 6px;
+        border-radius: 5px;
+    }
+    .searchbar{
+        width: 50%;
+        height: 35px;
+    }
+    .custom_container{
+        --bs-gutter-x: 0.1rem;
+    }
+    
+}

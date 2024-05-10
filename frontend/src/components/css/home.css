@@ -1,0 +1,94 @@
+@keyframes slide-in {
+  from {
+    opacity: 0;
+  }
+  to { 
+    opacity: 1;
+  }
+}
+
+.woah {
+  font-size: 200px;
+  font-weight: bold;
+  color: #002142;
+  animation: slide-in 1.5s ease-out;
+  transition: letter-spacing 1s ease-in-out;
+}
+.woah:hover {
+  letter-spacing: 10px;
+}
+
+.sec{
+  padding: 0px 50px;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.image{
+  width: 550px;
+  height: 400px;
+}
+.outerhome{
+  padding: 20px;
+}
+.innerhome{
+  font-weight: bold;
+  font-size: 28px;
+}
+.textofspan{
+  font-size: 18px;
+  line-height: 1.1;
+}
+.shopbtn {
+  position: relative;
+  display: inline-block;
+  padding: 10px 20px;
+  text-align: center;
+  font-size: 18px;
+  letter-spacing: 1px;
+  text-decoration: none;
+  color: #000000;
+  background: transparent;
+  cursor: pointer;
+  transition: ease-out 0.5s;
+  border: 2px solid #002142;
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 0 #000000;
+}
+
+.shopbtn:hover {
+  color: white;
+  box-shadow: inset 0 -100px 0 0 #002142;
+}
+
+.shopbtn:active {
+  transform: scale(0.9);
+}
+
+@media (max-width:400px){
+  .woah{
+   font-size: 80px;
+  }
+  .image{
+    width: 150px;
+    height: 130px;
+  }
+  .outerhome{
+    padding: 2px;
+  }
+  .innerhome{
+    font-weight: bold;
+    font-size: 18px;
+  }
+  .textofspan{
+    font-size: 10px;
+    line-height: 0.1;
+  }
+  .shopbtn {
+    padding: 4px 8px;
+    font-size: 15px;
+    border: 1px solid #002142;
+    border-radius: 5px;
+  }
+}

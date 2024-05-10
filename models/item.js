@@ -18,6 +18,10 @@ const itemSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    bidActive: {
+      type: Boolean,
+      default: true,
+    },
     image: {
       type: String,
       required: false,
