@@ -82,6 +82,7 @@ const Card = ({ name, price, description, category, image, userid, bidActive }) 
           <p className="text-body">{description.length > 20 ? description.substring(0, 20) : description}</p>
         </div>
         <div className="card-footer">
+
           <span className="text-title">Rs.{bid}</span>
           <div className="card-button" onClick={openModal}>
             <svg className="svg-icon" viewBox="0 0 20 20">
