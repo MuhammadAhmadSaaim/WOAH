@@ -5,6 +5,7 @@ import Home from './components/home';
 import Product from './components/product';
 import Login from './components/login';
 import CreateItem from './components/createItem';
+import Profile from './components/profile'; 
 import {
   BrowserRouter as Router,
   Routes,
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/item" element={<CreateItem />} />
           <Route path="/cart" element={<Cart/>} />
           <Route path="/payment" element={<Payment/>} />
+          <Route path="/profile" element={<Profile/>} />
         </Routes>
       </Router>
     </>

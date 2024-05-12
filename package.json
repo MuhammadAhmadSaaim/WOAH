@@ -4,6 +4,7 @@
   "description": "",
   "main": "db_connect.js",
   "scripts": {
+    "start": "nodemon db_connect.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

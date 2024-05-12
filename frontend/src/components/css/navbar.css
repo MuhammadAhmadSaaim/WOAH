@@ -51,6 +51,7 @@
     transition: ease-out 0.5s;
     cursor: pointer;
   }
+  
   .cart:active {
     transform: scale(0.9);
   }

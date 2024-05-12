@@ -15,6 +15,10 @@ const Navbar = () => {
     navigate('/shop');
   };
 
+  const toProfile = () => {
+    navigate('/profile');
+  };
+
   const toLoginOrLogout = () => {
     if (authToken === null) {
       navigate('/login');
@@ -38,9 +42,9 @@ const Navbar = () => {
     };
   }, []);
 
-  const gotoCart=()=>{
+  const gotoCart = () => {
     navigate('/cart');
-  }
+  };
 
   return (
     <div className="container-fluid my-3 px-5">
@@ -57,15 +61,19 @@ const Navbar = () => {
           <button className="btn_nav" onClick={toShop}>
             Shop
           </button>
+          <button className="btn_nav" onClick={toProfile}>
+            Profile
+          </button>
         </div>
-        <div style={{display:"flex"}}>
+        <div className="nav-item" style={{ display: 'flex', alignItems: 'center' }}>
+          {authToken !== null ? (
+            <div className="cart" onClick={gotoCart}>
+              <FaShoppingCart />
+            </div>
+          ) : null}
           <button className="lbtn mx-2" onClick={toLoginOrLogout}>
             {authToken === null ? 'Login' : 'Logout'}
           </button>
-          {authToken !== null ? (
-        <div className='cart' onClick={gotoCart}>
-          <FaShoppingCart />
-        </div>) : null} 
         </div>
       </ul>
     </div>
