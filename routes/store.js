@@ -1,8 +1,8 @@
-const express=require("express");
+const express = require("express");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
 const fetchUser = require("../middleware/fetchuser");
-const Item=require('../models/item');
+const Item = require('../models/item');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
@@ -18,7 +18,7 @@ cloudinary.config({
 
 // Set up Multer for in-memory storage
 const storage = multer.memoryStorage();
-const upload = multer({ storage }); 
+const upload = multer({ storage });
 
 // Function to upload image to Cloudinary and return the URL
 function uploadImageToCloudinary(buffer) {
@@ -38,7 +38,7 @@ function uploadImageToCloudinary(buffer) {
 // Route handler for creating an item
 router.post('/createitem', fetchUser, upload.single('image'), async (req, res) => {
   try {
-    const { name, price, description } = req.body;
+    const { name, price, description, category } = req.body;
 
     let imageUrl = null;
     if (req.file) {
@@ -62,6 +62,7 @@ router.post('/createitem', fetchUser, upload.single('image'), async (req, res) =
       price,
       description,
       image: imageUrl, // Store the Cloudinary image URL
+      category,
     });
 
     res.status(201).json(newItem);
@@ -182,14 +183,14 @@ router.get('/cart', fetchUser, async (req, res) => {
 
 router.post("/search", async (req, res) => {
   try {
-    
+
     const items = await Item.find({
       name: { $regex: new RegExp(req.body.name, 'i') }, // 'i' for case-insensitive
     });
 
     //when there are no items
     if (!items || items.length === 0) {
-      return res.status(404).json({ message: "No items found."});
+      return res.status(404).json({ message: "No items found." });
     }
 
     res.status(200).json(items);

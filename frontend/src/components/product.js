@@ -42,7 +42,7 @@ const Product = () => {
 
       setAllItems(data);
       console.log(data);
-      setIsLoading(false); 
+      setIsLoading(false);
     } catch (error) {
       console.error('Error fetching data:', error);
       setError('No item found');
@@ -51,21 +51,21 @@ const Product = () => {
   };
   const handleKeyDown = async (event) => {
     if (event.key === 'Enter') {
-        if (search === '') {
-            fetchData();
-        } else {
-            const response = await fetch(`${window.location.origin}/create/search`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name: search }),
-            });
-            const data = await response.json();
-            setAllItems(data);
-        }
+      if (search === '') {
+        fetchData();
+      } else {
+        const response = await fetch(`${window.location.origin}/create/search`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name: search }),
+        });
+        const data = await response.json();
+        setAllItems(data);
+      }
     }
-}
+  }
 
   return (
     <>
@@ -74,7 +74,7 @@ const Product = () => {
         <div
           style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         >
-          <input className="searchbar mx-2" type="text" placeholder="Search Products" onChange={(e) => { setSearch(e.target.value) }} onKeyDown={handleKeyDown}/>
+          <input className="searchbar mx-2" type="text" placeholder="Search Products" onChange={(e) => { setSearch(e.target.value) }} onKeyDown={handleKeyDown} />
           <button className="btn_pro" onClick={toItem}>
             Add Item
           </button>
@@ -104,6 +104,7 @@ const Product = () => {
                       name={element.name}
                       price={element.price}
                       description={element.description}
+                      category={element.category}
                       image={element.image}
                       userid={element.userId}
                       bidActive={element.bidActive}

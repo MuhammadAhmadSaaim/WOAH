@@ -38,7 +38,7 @@ const Navbar = () => {
     };
   }, []);
 
-  const gotoCart=()=>{
+  const gotoCart = () => {
     navigate('/cart');
   }
 
@@ -57,15 +57,18 @@ const Navbar = () => {
           <button className="btn_nav" onClick={toShop}>
             Shop
           </button>
+          <button className="btn_nav" onClick={toShop}>
+            Profile
+          </button>
         </div>
-        <div style={{display:"flex"}}>
+        <div style={{ display: "flex" }}>
           <button className="lbtn mx-2" onClick={toLoginOrLogout}>
             {authToken === null ? 'Login' : 'Logout'}
           </button>
           {authToken !== null ? (
-        <div className='cart' onClick={gotoCart}>
-          <FaShoppingCart />
-        </div>) : null} 
+            <div className='cart' onClick={gotoCart}>
+              <FaShoppingCart />
+            </div>) : null}
         </div>
       </ul>
     </div>

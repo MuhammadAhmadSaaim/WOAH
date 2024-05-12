@@ -26,6 +26,10 @@ const itemSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    category: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

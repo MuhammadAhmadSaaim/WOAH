@@ -1,9 +1,9 @@
 import React from 'react';
-import { useNavigate  } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './css/createItem.css';
 
 const CreateItem = ({ onSubmit }) => {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const authToken = localStorage.getItem('authToken');
 
   const handleSubmit = async (e) => {
@@ -28,7 +28,7 @@ const CreateItem = ({ onSubmit }) => {
       console.error('Error during submission:', error.message); // Detailed error message
     }
   };
-  
+
 
   return (
     <div className="d-flex justify-content-center align-items-center my-4">
@@ -46,7 +46,7 @@ const CreateItem = ({ onSubmit }) => {
               <label htmlFor="name" className="form-label">
                 Name:
               </label>
-              <input type="text" className="form-control" id="name" name="name" placeholder="Enter name"required />
+              <input type="text" className="form-control" id="name" name="name" placeholder="Enter name" required />
 
               <label htmlFor="price" className="form-label">
                 Price:
@@ -56,9 +56,13 @@ const CreateItem = ({ onSubmit }) => {
               <label htmlFor="description" className="form-label">
                 Description:
               </label>
-              <input type="text" className="form-control mb-3" id="description" name="description" placeholder="Enter description"required/>
-            </fieldset>
+              <input type="text" className="form-control mb-3" id="description" name="description" placeholder="Enter description" required />
 
+              <label htmlFor="description" className="form-label">
+                Category:
+              </label>
+              <input type="text" className="form-control" id="category" name="category" placeholder="Enter category" required />
+            </fieldset>
             <button className="createitem_btn">
               <span>Submit</span>
             </button>
